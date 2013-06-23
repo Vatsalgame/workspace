@@ -3,16 +3,19 @@ package com.teamvat.budgetme;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
 
 public class TrackStatus extends Activity {
 	
@@ -30,6 +33,17 @@ public class TrackStatus extends Activity {
 		ArrayAdapter<String> populator = new ArrayAdapter<String>(this, R.layout.spinner_item, statVariants);
 //		populator.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(populator);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			
+			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+				updateStats();
+			}
+			
+			public void onNothingSelected(AdapterView<?> adapterView) {
+				updateStats();
+			}
+			
+		});
 		updateStats();
 	}
 	
@@ -45,6 +59,9 @@ public class TrackStatus extends Activity {
 		getMenuInflater().inflate(R.menu.track_status, menu);
 		return true;
 	}
+	
+
+	
 	
 	public void updateStats() {
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
@@ -95,14 +112,14 @@ public class TrackStatus extends Activity {
     	String [] selectionArgs;
     	
     	if(statDef.equals(statVariants[1])) {
-    		selection = "Category like ? and Expense_date like ?";
+    		selection = "Category like ? AND Expense_date like ?";
     		selectionArgs = new String[2];
-    		selectionArgs[1] = date.substring(0, 7);
+    		selectionArgs[1] = date.substring(0, 7) + "%";
     	}
     	else if(statDef.equals(statVariants[2])) {
-    		selection = "Category like ? and Expense_date like ?";
+    		selection = "Category like ? AND Expense_date like ?";
     		selectionArgs = new String[2];
-    		selectionArgs[1] = date.substring(0, 3);
+    		selectionArgs[1] = date.substring(0, 3) + "%";
     	}
     	else {
     		selection = "Category like ?";
@@ -113,12 +130,12 @@ public class TrackStatus extends Activity {
     		catExpenses[i] = 0.0;
     		selectionArgs[0] = AddExpense.categories[i];
     		rowPointer = db.query(BudgetEntry.TABLE_NAME, 
-					 projection, 
-					 selection, 
-					 selectionArgs, 
-					 null, 
-					 null, 
-					 null);
+					 			  projection, 
+					 			  selection, 
+					 			  selectionArgs, 
+					 			  null, 
+					 			  null, 
+					 			  null);
     		while (rowPointer.moveToNext()) {
         		catExpenses[i] = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
         	}
