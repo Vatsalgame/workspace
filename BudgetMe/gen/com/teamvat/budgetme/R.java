@@ -37,8 +37,8 @@ public final class R {
         public static final int addExpLabel=0x7f0a0001;
         public static final int addSwitchButton=0x7f0a0017;
         public static final int amtText=0x7f0a001b;
-        public static final int catBills=0x7f0a0021;
-        public static final int catEducation=0x7f0a0020;
+        public static final int catBills=0x7f0a0020;
+        public static final int catEducation=0x7f0a0021;
         public static final int catFood=0x7f0a0022;
         public static final int catGas=0x7f0a0023;
         public static final int catGroceries=0x7f0a0024;
@@ -78,6 +78,7 @@ public final class R {
         public static final int activity_configure=0x7f030001;
         public static final int activity_home_page=0x7f030002;
         public static final int activity_track_status=0x7f030003;
+        public static final int spinner_item=0x7f030004;
     }
     public static final class menu {
         public static final int add_expense=0x7f090000;

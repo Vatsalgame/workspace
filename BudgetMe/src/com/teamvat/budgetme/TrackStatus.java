@@ -23,10 +23,10 @@ public class TrackStatus extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_track_status);
 		updateStats();
-//		Spinner spinner = (Spinner) findViewById(R.id.statLabel);
-//		ArrayAdapter<String> populator = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, statVariants);
+		Spinner spinner = (Spinner) findViewById(R.id.statLabel);
+		ArrayAdapter<String> populator = new ArrayAdapter<String>(this, R.layout.spinner_item, statVariants);
 //		populator.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		spinner.setAdapter(populator);
+		spinner.setAdapter(populator);
 	}
 	
 	@Override
