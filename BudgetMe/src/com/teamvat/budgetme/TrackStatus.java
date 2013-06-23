@@ -1,5 +1,8 @@
 package com.teamvat.budgetme;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
 
 import android.app.Activity;
@@ -22,11 +25,12 @@ public class TrackStatus extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_track_status);
-		updateStats();
+		
 		Spinner spinner = (Spinner) findViewById(R.id.statLabel);
 		ArrayAdapter<String> populator = new ArrayAdapter<String>(this, R.layout.spinner_item, statVariants);
 //		populator.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(populator);
+		updateStats();
 	}
 	
 	@Override
@@ -77,8 +81,34 @@ public class TrackStatus extends Activity {
     			billExpenses, eduExpenses, foodExpenses, gasExpenses, groExpenses, rentExpenses, repExpenses, othExpenses
     	};
     	Double[] catExpenses = new Double[AddExpense.categories.length];
-    	String selection = "Category like ?";
-    	String [] selectionArgs = new String[1];
+    	
+    	// getting the variant of stats demanded
+    	Spinner statType = (Spinner) findViewById(R.id.statLabel);
+    	String statDef = statType.getSelectedItem().toString();
+    	// current date
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date curr_date = new Date();
+    	String date = dateFormat.format(curr_date);
+    	// insert args
+    	//
+    	String selection;
+    	String [] selectionArgs;
+    	
+    	if(statDef.equals(statVariants[1])) {
+    		selection = "Category like ? and Expense_date like ?";
+    		selectionArgs = new String[2];
+    		selectionArgs[1] = date.substring(0, 7);
+    	}
+    	else if(statDef.equals(statVariants[2])) {
+    		selection = "Category like ? and Expense_date like ?";
+    		selectionArgs = new String[2];
+    		selectionArgs[1] = date.substring(0, 3);
+    	}
+    	else {
+    		selection = "Category like ?";
+        	selectionArgs = new String[1];
+    	}   	
+    	
     	for(int i = 0; i < AddExpense.categories.length; i++) {
     		catExpenses[i] = 0.0;
     		selectionArgs[0] = AddExpense.categories[i];
