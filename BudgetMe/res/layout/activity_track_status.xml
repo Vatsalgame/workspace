@@ -128,4 +128,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="26sp" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/catRepairs"
+        android:layout_alignRight="@+id/statLabel"
+        android:onClick="goToPie"
+        android:text="pie"
+        android:textSize="28sp" />
+
 </RelativeLayout>

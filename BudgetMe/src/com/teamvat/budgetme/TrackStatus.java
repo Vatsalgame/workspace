@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -60,8 +61,11 @@ public class TrackStatus extends Activity {
 		return true;
 	}
 	
-
-	
+	// for testing webview
+	public void goToPie(View view) {
+		Intent switchToPie = new Intent(this, ChartPie.class);
+		startActivity(switchToPie);
+	}	
 	
 	public void updateStats() {
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
