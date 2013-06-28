@@ -26,6 +26,7 @@ import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
 public class ChartPie extends Activity {
 	
 	BudgetDbHelper bDbHelper;
+	String screenSize;
 	public static String[] statVariants = {
 		"Stats (to Date)", "Stats (this Month)", "Stats (this Year)"
 	};
@@ -34,6 +35,17 @@ public class ChartPie extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chart_pie);
+		// getting the layout type to determine size of chart
+//		if(findViewById(R.id.pieLayout).getTag().equals("small")) {
+//			screenSize = "small";
+//		}
+//		else if(findViewById(R.id.pieLayout).getTag().equals("medium")) {
+//			screenSize = "medium";
+//		}
+//		else {
+//			screenSize = "large";
+//		}
+		screenSize = findViewById(R.id.pieLayout).getTag().toString();
 		Spinner spinner = (Spinner) findViewById(R.id.chartSpinner);
 		ArrayAdapter<String> populator = new ArrayAdapter<String>(this, R.layout.spinner_item, statVariants);
 //		populator.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -120,6 +132,7 @@ public class ChartPie extends Activity {
     		totalExpenses += catExpenses[i];
     	}
     	
+    	// creating a pie chart as per selected data
     	Slice[] slices = new Slice[AddExpense.categories.length];
     	slices[0] = Slice.newSlice((int)Math.round(catExpenses[0]*100/totalExpenses), Color.newColor("EAEADB"), 
     								""+(int)Math.round(catExpenses[0]*100/totalExpenses), AddExpense.categories[0]);
@@ -137,15 +150,22 @@ public class ChartPie extends Activity {
 				""+(int)Math.round(catExpenses[6]*100/totalExpenses), AddExpense.categories[6]);
     	slices[7] = Slice.newSlice((int)Math.round(catExpenses[7]*100/totalExpenses), Color.newColor("E32020"), 
 				""+(int)Math.round(catExpenses[7]*100/totalExpenses), AddExpense.categories[7]);
-		// creating a pie chart as per selected data
-		Slice s1 = Slice.newSlice(20, Color.newColor("CACACA"), "Safari", "Apple(30%)");
-        Slice s2 = Slice.newSlice(20, Color.newColor("DF7417"), "Firefox", "Mozilla(30%)");
-        Slice s3 = Slice.newSlice(20, Color.newColor("951800"), "Chrome", "Google(30%)");
-        Slice s4 = Slice.newSlice(10, Color.newColor("01A1DB"), "Internet Explorer", "Microsoft(10%)");
 
         PieChart chart = GCharts.newPieChart(slices);
-        chart.setTitle(title, BLACK, 16);
-        chart.setSize(500, 200);
+
+        if(screenSize.equals("small")) {
+        	chart.setTitle(title, BLACK, 12);
+        	chart.setSize(400, 210);
+        }
+        else if(screenSize.equals("medium")) {
+        	chart.setTitle(title, BLACK, 16);
+        	chart.setSize(425, 225);
+        }
+        else {
+        	chart.setTitle(title, BLACK, 22);
+        	chart.setSize(550, 250);
+        }
+        
         chart.setThreeD(true);
         String url = chart.toURLString();
         

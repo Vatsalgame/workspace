@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:text="Money Spent"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/remainderText"
@@ -29,7 +29,7 @@
         android:layout_marginTop="47dp"
         android:text="Money Remaining:"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/mBudgetText"
@@ -40,7 +40,7 @@
         android:layout_marginTop="55dp"
         android:text="Budget for this month: "
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="32sp" />
 
     <Button
         android:id="@+id/configButton"
@@ -83,43 +83,43 @@
         android:textSize="28sp" />
 
     <TextView
+        android:id="@+id/dailyStat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mBudgetText"
+        android:layout_below="@+id/mBudgetText"
+        android:layout_marginTop="132dp"
+        android:text="Daily Stats:"
+        android:textSize="32sp" />
+
+    <TextView
         android:id="@+id/dayBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/daySpent"
-        android:layout_alignLeft="@+id/mBudgetText"
-        android:layout_marginBottom="21dp"
+        android:layout_alignLeft="@+id/dailyStat"
+        android:layout_below="@+id/dailyStat"
+        android:layout_marginTop="30dp"
         android:text="Budget for the day:"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/dayRem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/trackButton"
-        android:layout_alignLeft="@+id/dayBudget"
-        android:layout_marginBottom="128dp"
-        android:text="Money Remaining:"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/daySpent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dayRem"
-        android:layout_alignLeft="@+id/dayRem"
-        android:layout_marginBottom="28dp"
+        android:layout_alignLeft="@+id/dayBudget"
+        android:layout_below="@+id/dayBudget"
+        android:layout_marginTop="31dp"
         android:text="Money Spent:"
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/dailyStat"
+        android:id="@+id/dayRem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dayBudget"
-        android:layout_alignLeft="@+id/dayBudget"
-        android:layout_marginBottom="27dp"
-        android:text="Daily Stats:"
-        android:textSize="32sp" />
+        android:layout_alignLeft="@+id/daySpent"
+        android:layout_below="@+id/daySpent"
+        android:layout_marginTop="30dp"
+        android:text="Money Remaining:"
+        android:textSize="30sp" />
 
 </RelativeLayout>

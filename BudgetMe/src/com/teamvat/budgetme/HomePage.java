@@ -1,10 +1,10 @@
 package com.teamvat.budgetme;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +28,10 @@ public class HomePage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_page);
 		updateFields();
+		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
+		if(fieldValues.getBoolean("dailyStats", false)) {
+			dailyStatsUpdate();
+		}
 	}
 	
 	// if activity is paused and started again
@@ -35,6 +39,9 @@ public class HomePage extends Activity {
 	public void onRestart() {
 		super.onRestart();
 		updateFields();
+		if(fieldValues.getBoolean("dailyStats", false)) {
+			dailyStatsUpdate();
+		}
 	}
 	
 //	// if activity gains focus after app is stopped
@@ -68,50 +75,94 @@ public class HomePage extends Activity {
 	}
 	
 	// to test DB reading
-	public void refresh(View view) {
+	// not deleting the method yet
+//	public void refresh(View view) {
+//		bDbHelper = new BudgetDbHelper(getApplicationContext());
+//		SQLiteDatabase db = bDbHelper.getReadableDatabase();
+//		// columns to read
+//		String[] projection = {
+//				BudgetEntry.COLUMN_NAME_EXPENSE_ID,
+//				BudgetEntry.COLUMN_NAME_EXPENSE_AMT,
+//				BudgetEntry.COLUMN_NAME_EXPENSE_CAT,
+//				BudgetEntry.COLUMN_NAME_EXPENSE_DATE
+//		};
+//		
+//		String selection = "Expense_Id > ?";
+//		String[] selectionArgs = {
+//				"0"
+//		};
+//		
+//		Cursor rowPointer = db.query(BudgetEntry.TABLE_NAME, 
+//									 projection, 
+//									 selection, 
+//									 selectionArgs, 
+//									 null, 
+//									 null, 
+//									 null);
+//		
+////		rowPointer.moveToFirst();
+//		int id = 0;
+//		Double amt = 0.0;
+//		String category = "default";
+//		String date = "0000-00-00";
+//		while (rowPointer.moveToNext()) {
+//			id = rowPointer.getInt(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_ID));
+//			amt = rowPointer.getDouble(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_AMT));
+//			category = rowPointer.getString(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_CAT));
+//			date = rowPointer.getString(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_DATE));
+//		}
+//		
+//		TextView idText = (TextView) findViewById(R.id.idText);
+//		idText.setText("" + id);
+//		TextView amtText = (TextView) findViewById(R.id.amtText);
+//		amtText.setText("" + amt);
+//		TextView catText = (TextView) findViewById(R.id.catText);
+//		catText.setText(category);
+//		TextView dateText = (TextView) findViewById(R.id.dateText);
+//		dateText.setText(date);
+//	}
+	
+	
+	// daily stats updater
+	public void dailyStatsUpdate() {
+		TextView dailyStatText = (TextView) findViewById(R.id.dailyStat);
+		dailyStatText.setText("Daily Stats:");
+		
+		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
+		Float monthlyBudget = fieldValues.getFloat("monthlyBudget", 0.0f);
+		
+		TextView dayBudgetText = (TextView) findViewById(R.id.dayBudget);
+		Float dailyBudget = monthlyBudget/30;
+		dayBudgetText.setText("Budget for the Day: " + new DecimalFormat("#.##").format(dailyBudget));
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getReadableDatabase();
-		// columns to read
-		String[] projection = {
-				BudgetEntry.COLUMN_NAME_EXPENSE_ID,
-				BudgetEntry.COLUMN_NAME_EXPENSE_AMT,
-				BudgetEntry.COLUMN_NAME_EXPENSE_CAT,
-				BudgetEntry.COLUMN_NAME_EXPENSE_DATE
-		};
-		
-		String selection = "Expense_Id > ?";
-		String[] selectionArgs = {
-				"0"
-		};
-		
-		Cursor rowPointer = db.query(BudgetEntry.TABLE_NAME, 
-									 projection, 
-									 selection, 
-									 selectionArgs, 
-									 null, 
-									 null, 
-									 null);
-		
-//		rowPointer.moveToFirst();
-		int id = 0;
-		Double amt = 0.0;
-		String category = "default";
-		String date = "0000-00-00";
-		while (rowPointer.moveToNext()) {
-			id = rowPointer.getInt(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_ID));
-			amt = rowPointer.getDouble(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_AMT));
-			category = rowPointer.getString(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_CAT));
-			date = rowPointer.getString(rowPointer.getColumnIndex(BudgetEntry.COLUMN_NAME_EXPENSE_DATE));
-		}
-		
-		TextView idText = (TextView) findViewById(R.id.idText);
-		idText.setText("" + id);
-		TextView amtText = (TextView) findViewById(R.id.amtText);
-		amtText.setText("" + amt);
-		TextView catText = (TextView) findViewById(R.id.catText);
-		catText.setText(category);
-		TextView dateText = (TextView) findViewById(R.id.dateText);
-		dateText.setText(date);
+		// getting the date to get monthly expenditure
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date curr_date = new Date();
+    	String date = dateFormat.format(curr_date);
+    	// readying the query to get daily stats
+    	String[] projection = {
+    		"sum("	+ BudgetEntry.COLUMN_NAME_EXPENSE_AMT + ") AS 'SUM'"
+    	};
+    	String selection = "Expense_Date like ?";
+    	String[] selectionArgs = {
+    			date
+    	};
+    	Cursor rowPointer = db.query(BudgetEntry.TABLE_NAME, 
+				 projection, 
+				 selection, 
+				 selectionArgs, 
+				 null, 
+				 null, 
+				 null);
+    	Double totalDailyExpense = 0.0;
+    	while (rowPointer.moveToNext()) {
+    		totalDailyExpense = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
+    	}
+    	TextView daySpentText = (TextView) findViewById(R.id.daySpent);
+		daySpentText.setText("Money Spent: " + new DecimalFormat("#.##").format(totalDailyExpense));
+		TextView dayRemText = (TextView) findViewById(R.id.dayRem);
+		dayRemText.setText("Money Remaining: " + new DecimalFormat("#.##").format(dailyBudget - totalDailyExpense));
 	}
 	
 	// to set the main fields on home page
@@ -120,7 +171,7 @@ public class HomePage extends Activity {
 		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
 		Float monthlyBudget = fieldValues.getFloat("monthlyBudget", 0.0f);
 		TextView monBudgetText = (TextView) findViewById(R.id.mBudgetText);
-		monBudgetText.setText("Budget for this month: " + monthlyBudget);
+		monBudgetText.setText("Budget for this month: " + new DecimalFormat("#.##").format(monthlyBudget));
 		// to get total expenses for the month
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getReadableDatabase();
@@ -153,7 +204,7 @@ public class HomePage extends Activity {
     	
     	Double moneyRemaining = monthlyBudget - totalMonthlyExpense;
     	TextView remText = (TextView) findViewById(R.id.remainderText);
-    	remText.setText("Money Remaining: " + moneyRemaining);    	
+    	remText.setText("Money Remaining: " + new DecimalFormat("#.##").format(moneyRemaining));    	
 	} 
 
 }
