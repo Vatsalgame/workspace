@@ -32,6 +32,9 @@ public class HomePage extends Activity {
 		if(fieldValues.getBoolean("dailyStats", false)) {
 			dailyStatsUpdate();
 		}
+		else {
+			clearDailyStats();
+		}
 	}
 	
 	// if activity is paused and started again
@@ -41,6 +44,9 @@ public class HomePage extends Activity {
 		updateFields();
 		if(fieldValues.getBoolean("dailyStats", false)) {
 			dailyStatsUpdate();
+		}
+		else {
+			clearDailyStats();
 		}
 	}
 	
@@ -163,6 +169,18 @@ public class HomePage extends Activity {
 		daySpentText.setText("Money Spent: " + new DecimalFormat("#.##").format(totalDailyExpense));
 		TextView dayRemText = (TextView) findViewById(R.id.dayRem);
 		dayRemText.setText("Money Remaining: " + new DecimalFormat("#.##").format(dailyBudget - totalDailyExpense));
+	}
+	
+	// to clear daily stats
+	public void clearDailyStats() {
+		TextView dailyStatText = (TextView) findViewById(R.id.dailyStat);
+		TextView dayBudgetText = (TextView) findViewById(R.id.dayBudget);
+		TextView daySpentText = (TextView) findViewById(R.id.daySpent);
+		TextView dayRemText = (TextView) findViewById(R.id.dayRem);
+		dailyStatText.setText("");
+		dayBudgetText.setText("");
+		daySpentText.setText("");
+		dayRemText.setText("");
 	}
 	
 	// to set the main fields on home page

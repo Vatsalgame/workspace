@@ -117,16 +117,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="38sp" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/catRepairs"
-        android:layout_alignRight="@+id/statLabel"
-        android:onClick="goToPie"
-        android:text="pie"
-        android:textSize="28sp" />
-
     <TextView
         android:id="@+id/catBills"
         android:layout_width="wrap_content"
@@ -137,5 +127,17 @@
         android:text="in Bills:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="38sp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/catOthers"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/catRepairs"
+        android:layout_toRightOf="@+id/totalExpense"
+        android:onClick="goToPie"
+        android:text="PieChart"
+        android:textSize="28sp" />
 
 </RelativeLayout>

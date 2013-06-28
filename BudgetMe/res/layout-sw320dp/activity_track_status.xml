@@ -8,16 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TrackStatus" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/catRepairs"
-        android:layout_alignRight="@+id/statLabel"
-        android:onClick="goToPie"
-        android:text="pie"
-        android:textSize="18sp" />
-
     <TextView
         android:id="@+id/totalExpense"
         android:layout_width="wrap_content"
@@ -133,5 +123,16 @@
         android:text="in Bills:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/catOthers"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/catRepairs"
+        android:onClick="goToPie"
+        android:text="PieChart"
+        android:textSize="18sp" />
 
 </RelativeLayout>
