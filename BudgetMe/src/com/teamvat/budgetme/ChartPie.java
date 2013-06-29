@@ -28,7 +28,7 @@ public class ChartPie extends Activity {
 	BudgetDbHelper bDbHelper;
 	String screenSize;
 	public static String[] statVariants = {
-		"Stats (to Date)", "Stats (this Month)", "Stats (this Year)"
+		"Stats (to Date)", "Stats (this Month)", "Stats (this Year)", "Stats (today)"
 	};
 	
 	@Override
@@ -106,6 +106,12 @@ public class ChartPie extends Activity {
     		selectionArgs = new String[2];
     		selectionArgs[1] = date.substring(0, 3) + "%";
     		title = "Expenses for this year";
+    	}
+    	else if(statDef.equals(statVariants[3])) {
+    		selection = "Category like ? AND Expense_date like ?";
+    		selectionArgs = new String[2];
+    		selectionArgs[1] = date;
+    		title = "Expenses for today";
     	}
     	else {
     		selection = "Category like ?";
