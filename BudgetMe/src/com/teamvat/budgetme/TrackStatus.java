@@ -1,13 +1,16 @@
 package com.teamvat.budgetme;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,8 +24,9 @@ import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
 public class TrackStatus extends Activity {
 	
 	BudgetDbHelper bDbHelper;
+	SharedPreferences fieldValues;
 	public static String[] statVariants = {
-		"Stats (to Date)", "Stats (this Month)", "Stats (this Year)"
+		"Stats (to Date)", "Stats (this Month)", "Stats (this Year)", "Stats (today)"
 	};
 	
 	@Override
@@ -68,6 +72,10 @@ public class TrackStatus extends Activity {
 	}	
 	
 	public void updateStats() {
+		// getting the currency
+		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
+		String currency = fieldValues.getString("currency", "CAD");
+		// getting a readable database
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getReadableDatabase();
 		// write a similar code as following for different categories
@@ -86,7 +94,11 @@ public class TrackStatus extends Activity {
     		totalExpense = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
     	}
 		TextView totalExpenses = (TextView) findViewById(R.id.totalExpense);
-    	totalExpenses.setText("Total Expenditure (to date): " + totalExpense);
+    	totalExpenses.setText("Total Expenditure (to date): " + 
+    							new DecimalFormat("#.##").format(totalExpense) + " " + currency);
+    	
+    	TextView catExps = (TextView) findViewById(R.id.catWiseExp);
+    	catExps.setText("Category-wise expenses (in " + currency + ")");
     	
     	// to populate all the views
     	TextView billExpenses = (TextView) findViewById(R.id.catBills);
@@ -125,6 +137,11 @@ public class TrackStatus extends Activity {
     		selectionArgs = new String[2];
     		selectionArgs[1] = date.substring(0, 3) + "%";
     	}
+    	else if(statDef.equals(statVariants[3])) {
+    		selection = "Category like ? AND Expense_date like ?";
+    		selectionArgs = new String[2];
+    		selectionArgs[1] = date;
+    	}
     	else {
     		selection = "Category like ?";
         	selectionArgs = new String[1];
@@ -143,7 +160,7 @@ public class TrackStatus extends Activity {
     		while (rowPointer.moveToNext()) {
         		catExpenses[i] = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
         	}
-    		catTextList[i].setText(AddExpense.categories[i] + ": " + catExpenses[i]);    		
+    		catTextList[i].setText(AddExpense.categories[i] + ": " + new DecimalFormat("#.##").format(catExpenses[i]));    		
     	}
 	}
 

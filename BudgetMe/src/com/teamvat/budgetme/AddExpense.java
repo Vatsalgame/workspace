@@ -6,6 +6,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.teamvat.budgetme.BudgetReaderContract.BudgetEntry;
 
@@ -45,6 +47,7 @@ public class AddExpense extends Activity {
 		return true;
 	}
 	
+	// called when user clicks on Add Expense
 	public void enterExpense(View view) {
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getWritableDatabase();
@@ -82,12 +85,11 @@ public class AddExpense extends Activity {
     	fieldEdit.putInt("entryID", BudgetEntry.entryID);
     	fieldEdit.commit();
     	
-    	
-//    	TextView amtText = (TextView) findViewById(R.id.textAmt);
-//    	amtText.setText(editAmt.getText().toString());
-//    	
-//    	TextView catText = (TextView) findViewById(R.id.textCat);
-//    	catText.setText(category);
+    	Context context = getApplicationContext();
+		String msg = "Expense Added";
+		// msg stays for 3.5 sec instead of 2 sec
+		int duration = Toast.LENGTH_SHORT;
+		Toast.makeText(context, msg, duration).show();
 	}
 
 }

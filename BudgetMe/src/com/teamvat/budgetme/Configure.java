@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Configure extends Activity {
 	
@@ -21,8 +22,9 @@ public class Configure extends Activity {
 	private static Boolean dailyStats;
 	private static String currency;
 	private static String[] currencies = {
-		"USD - US Dollar", "CAD - Canadian Dollar", "INR - Indian Rupee", "CHF - Swiss Franc", "EUR - Euro", "GBP - British Pound", 
-		"AED - Emirati Dirham" 
+		"CAD - Canadian Dollar", "INR - Indian Rupee", "USD - US Dollar", "CHF - Swiss Franc", "EUR - Euro", "GBP - British Pound", 
+		"AED - Emirati Dirham", "KWD - Kuwaiti Dinar", "BHD - Bahraini Dinar", "OMR - Oman Rial", "LVL - Latvian Lat", 
+		"JOD - Jordanian Dinar", "BSD - Bahamian Dollar", "CUP - Cuban Peso", "AUD - Australian Dollar"
 	};
 	
 	SharedPreferences configValues;
@@ -61,7 +63,9 @@ public class Configure extends Activity {
 	public void saveConfig(View view) {
 		// getting the values to save
 		EditText monBudget = (EditText) findViewById(R.id.monBudgetText);
-		Configure.monthlyBudget = Float.parseFloat(monBudget.getText().toString());
+		String monBudgetText = monBudget.getText().toString();
+		String monBudgetNum = monBudgetText.substring(0, monBudgetText.length() - 4);
+		Configure.monthlyBudget = Float.parseFloat(monBudgetNum);
 		Configure.yearlyBudget = monthlyBudget * 12;
 		Spinner spinCur = (Spinner) findViewById(R.id.curSpinner);
 		Configure.currency = spinCur.getSelectedItem().toString().substring(0, 3);
@@ -73,16 +77,22 @@ public class Configure extends Activity {
 		configEdit.putString("currency", currency);
 		configEdit.commit();
 		
+		Context context = getApplicationContext();
+		String msg = "Configuration Saved";
+		// msg stays for 3.5 sec instead of 2 sec
+		int duration = Toast.LENGTH_SHORT;
+		Toast.makeText(context, msg, duration).show();
+		
 		setFields();
 	}
 	
 	// method to set the fields to current values
 	public void setFields() {
 		TextView monBudget = (TextView) findViewById(R.id.monBudgetText);
-		monBudget.setText("" + monthlyBudget);
+		monBudget.setText("" + monthlyBudget + " " + currency);
 		
 		TextView yrBudget = (TextView) findViewById(R.id.yrBudgetText);
-		yrBudget.setText("" + yearlyBudget);
+		yrBudget.setText("" + yearlyBudget + " " + currency);
 		
 		CheckBox statCheck = (CheckBox) findViewById(R.id.dailyStatCheck);
 		statCheck.setChecked(dailyStats);

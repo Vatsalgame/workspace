@@ -131,6 +131,10 @@ public class HomePage extends Activity {
 	
 	// daily stats updater
 	public void dailyStatsUpdate() {
+		// getting the currency
+		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
+		String currency = fieldValues.getString("currency", "CAD");
+		
 		TextView dailyStatText = (TextView) findViewById(R.id.dailyStat);
 		dailyStatText.setText("Daily Stats:");
 		
@@ -139,7 +143,7 @@ public class HomePage extends Activity {
 		
 		TextView dayBudgetText = (TextView) findViewById(R.id.dayBudget);
 		Float dailyBudget = monthlyBudget/30;
-		dayBudgetText.setText("Budget for the Day: " + new DecimalFormat("#.##").format(dailyBudget));
+		dayBudgetText.setText("Budget for the Day: " + new DecimalFormat("#.##").format(dailyBudget) + " " + currency);
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getReadableDatabase();
 		// getting the date to get monthly expenditure
@@ -166,9 +170,9 @@ public class HomePage extends Activity {
     		totalDailyExpense = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
     	}
     	TextView daySpentText = (TextView) findViewById(R.id.daySpent);
-		daySpentText.setText("Money Spent: " + new DecimalFormat("#.##").format(totalDailyExpense));
+		daySpentText.setText("Money Spent: " + new DecimalFormat("#.##").format(totalDailyExpense) + " " + currency);
 		TextView dayRemText = (TextView) findViewById(R.id.dayRem);
-		dayRemText.setText("Money Remaining: " + new DecimalFormat("#.##").format(dailyBudget - totalDailyExpense));
+		dayRemText.setText("Money Remaining: " + new DecimalFormat("#.##").format(dailyBudget - totalDailyExpense) + " " + currency);
 	}
 	
 	// to clear daily stats
@@ -188,8 +192,10 @@ public class HomePage extends Activity {
 		// to get budget of the month
 		fieldValues = PreferenceManager.getDefaultSharedPreferences(this);
 		Float monthlyBudget = fieldValues.getFloat("monthlyBudget", 0.0f);
+		String currency = fieldValues.getString("currency", "CAD");
+		
 		TextView monBudgetText = (TextView) findViewById(R.id.mBudgetText);
-		monBudgetText.setText("Budget for this month: " + new DecimalFormat("#.##").format(monthlyBudget));
+		monBudgetText.setText("Budget for this month: " + new DecimalFormat("#.##").format(monthlyBudget) + " " + currency);
 		// to get total expenses for the month
 		bDbHelper = new BudgetDbHelper(getApplicationContext());
 		SQLiteDatabase db = bDbHelper.getReadableDatabase();
@@ -218,11 +224,11 @@ public class HomePage extends Activity {
     		totalMonthlyExpense = rowPointer.getDouble(rowPointer.getColumnIndex("SUM"));
     	}
     	TextView monExpenses = (TextView) findViewById(R.id.moneySpentText);
-    	monExpenses.setText("Money Spent: " + totalMonthlyExpense);
+    	monExpenses.setText("Money Spent: " + new DecimalFormat("#.##").format(totalMonthlyExpense) + " " + currency);
     	
     	Double moneyRemaining = monthlyBudget - totalMonthlyExpense;
     	TextView remText = (TextView) findViewById(R.id.remainderText);
-    	remText.setText("Money Remaining: " + new DecimalFormat("#.##").format(moneyRemaining));    	
+    	remText.setText("Money Remaining: " + new DecimalFormat("#.##").format(moneyRemaining) + " " + currency);    	
 	} 
 
 }
