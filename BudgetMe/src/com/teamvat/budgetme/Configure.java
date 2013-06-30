@@ -64,7 +64,14 @@ public class Configure extends Activity {
 		// getting the values to save
 		EditText monBudget = (EditText) findViewById(R.id.monBudgetText);
 		String monBudgetText = monBudget.getText().toString();
-		String monBudgetNum = monBudgetText.substring(0, monBudgetText.length() - 4);
+		String monBudgetNum;
+		if(monBudgetText.length() > 4 && 
+			monBudgetText.substring(monBudgetText.length() - 4, monBudgetText.length() - 3).equals(" ")) {
+			monBudgetNum = monBudgetText.substring(0, monBudgetText.length() - 4);
+		}
+		else {
+			monBudgetNum = monBudgetText;
+		}
 		Configure.monthlyBudget = Float.parseFloat(monBudgetNum);
 		Configure.yearlyBudget = monthlyBudget * 12;
 		Spinner spinCur = (Spinner) findViewById(R.id.curSpinner);

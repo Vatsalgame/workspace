@@ -9,45 +9,69 @@
     tools:context=".HomePage" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/showJSON"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/vela_waiting"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="38dp"
-        android:ems="10"
-        android:inputType="textMultiLine" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_marginTop="34dp"
+        android:text="TextView"
+        android:textSize="26sp" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText1"
-        android:layout_alignParentRight="true"
-        android:text="@string/button_go" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/showJSON"
+        android:layout_marginBottom="29dp"
+        android:layout_marginRight="14dp"
+        android:text="Get Data"
+        android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/fromCur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="124dp"
-        android:inputType="none"
-        android:text="@string/response" />
+        android:layout_alignLeft="@+id/showJSON"
+        android:layout_alignRight="@+id/showJSON"
+        android:layout_below="@+id/showJSON"
+        android:layout_marginTop="61dp"
+        android:text="TextView"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/toCur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fromCur"
+        android:layout_alignRight="@+id/fromCur"
+        android:layout_below="@+id/fromCur"
+        android:layout_marginTop="48dp"
+        android:text="TextView"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/rateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/toCur"
+        android:layout_alignRight="@+id/toCur"
+        android:layout_below="@+id/toCur"
+        android:layout_marginTop="48dp"
+        android:text="TextView"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/valText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rateText"
+        android:layout_alignRight="@+id/rateText"
+        android:layout_below="@+id/rateText"
+        android:layout_marginTop="46dp"
+        android:text="TextView"
+        android:textSize="26sp" />
 
 </RelativeLayout>
